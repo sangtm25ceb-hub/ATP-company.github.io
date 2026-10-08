@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATP Automation — Thiết kế · Thi công · Bảo dưỡng Tự động hóa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/png" href="assets/atp-logo.png">
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <img src="assets/atp-logo.png" alt="ATP Automation" class="logo-img">
+    <span class="dim">AUTOMATION</span>
+  </div>
+  <nav>
+    <a class="navlink" href="#dichvu">Dịch vụ</a>
+    <a class="navlink" href="#quytrinh">Quy trình</a>
+    <a class="navlink" href="#duan">Dự án</a>
+    <a class="navlink" href="#lienhe">Liên hệ</a>
+    <button class="btn solid" onclick="document.getElementById('atp-chat-toggle').click()">Yêu cầu tư vấn</button>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="eyebrow">Thiết kế · Thi công · Bảo dưỡng</div>
+      <h1>Tự động hóa nhà máy,<br>từ bản vẽ đến <span class="accent">vận hành thực tế.</span></h1>
+      <p class="lead">ATP Automation thiết kế, thi công lắp đặt và bảo dưỡng hệ thống tự động hóa công nghiệp — tủ điện điều khiển, PLC/SCADA, robot và dây chuyền sản xuất — cho nhà máy vận hành ổn định, ít dừng máy.</p>
+      <div class="hero-actions">
+        <button class="btn solid" onclick="document.getElementById('atp-chat-toggle').click()">Trò chuyện với ATP</button>
+        <a href="#dichvu" class="btn">Xem dịch vụ</a>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><div class="num">120<span class="u">+</span></div><div class="lbl">Dự án đã triển khai</div></div>
+        <div class="stat"><div class="num">11<span class="u">năm</span></div><div class="lbl">Kinh nghiệm ngành</div></div>
+        <div class="stat"><div class="num">24/7</div><div class="lbl">Hỗ trợ kỹ thuật</div></div>
+      </div>
+    </div>
+
+    <div class="schematic-wrap">
+      <div class="schematic-panel">
+        <div class="panel-head">
+          <span><span class="status-dot"></span>Control Panel — Live</span>
+          <span>ATP-CTRL-01</span>
+        </div>
+        <svg id="schematic-svg" viewBox="0 0 460 380" width="100%" style="display:block;">
+          <!-- grid dots -->
+          <g stroke="#22384f" stroke-width="1">
+            <line x1="30" y1="60" x2="430" y2="60"></line>
+            <line x1="30" y1="150" x2="430" y2="150"></line>
+            <line x1="30" y1="240" x2="430" y2="240"></line>
+            <line x1="30" y1="330" x2="430" y2="330"></line>
+          </g>
+          <!-- traces -->
+          <g fill="none" stroke="#2c4a68" stroke-width="1.5">
+            <path d="M60,60 L60,150 L160,150"></path>
+            <path d="M160,150 L160,60 L260,60"></path>
+            <path d="M260,60 L360,60 L360,150"></path>
+            <path d="M60,150 L60,240 L200,240"></path>
+            <path d="M200,240 L200,330 L340,330"></path>
+            <path d="M340,330 L400,330 L400,240 L340,240"></path>
+            <path d="M260,150 L260,240 L340,240"></path>
+          </g>
+          <!-- animated pulse traces -->
+          <g fill="none" stroke="#ffb020" stroke-width="2" stroke-linecap="round">
+            <path id="pulse1" d="M60,60 L60,150 L160,150" stroke-dasharray="10 300" stroke-dashoffset="0">
+              <animate attributeName="stroke-dashoffset" from="310" to="0" dur="3.2s" repeatCount="indefinite"/>
+            </path>
+            <path id="pulse2" d="M200,240 L200,330 L340,330" stroke-dasharray="10 300" stroke-dashoffset="0">
+              <animate attributeName="stroke-dashoffset" from="310" to="0" dur="2.6s" begin="0.8s" repeatCount="indefinite"/>
+            </path>
+            <path id="pulse3" d="M260,60 L360,60 L360,150" stroke-dasharray="8 260" stroke-dashoffset="0">
+              <animate attributeName="stroke-dashoffset" from="270" to="0" dur="2.9s" begin="1.4s" repeatCount="indefinite"/>
+            </path>
+          </g>
+          <!-- nodes -->
+          <g>
+            <circle cx="60" cy="60" r="6" fill="#101f30" stroke="#34d399" stroke-width="1.5"/>
+            <circle cx="160" cy="150" r="6" fill="#101f30" stroke="#8fa3b8" stroke-width="1.5"/>
+            <circle cx="260" cy="60" r="6" fill="#101f30" stroke="#ffb020" stroke-width="1.5"/>
+            <circle cx="360" cy="150" r="6" fill="#101f30" stroke="#8fa3b8" stroke-width="1.5"/>
+            <circle cx="60" cy="240" r="6" fill="#101f30" stroke="#8fa3b8" stroke-width="1.5"/>
+            <circle cx="200" cy="330" r="6" fill="#101f30" stroke="#34d399" stroke-width="1.5"/>
+            <circle cx="340" cy="330" r="6" fill="#101f30" stroke="#ffb020" stroke-width="1.5"/>
+            <circle cx="400" cy="240" r="6" fill="#101f30" stroke="#8fa3b8" stroke-width="1.5"/>
+            <circle cx="340" cy="240" r="6" fill="#101f30" stroke="#8fa3b8" stroke-width="1.5"/>
+          </g>
+          <!-- labels -->
+          <g font-family="IBM Plex Mono" font-size="9" fill="#546a80">
+            <text x="30" y="45">PLC-01</text>
+            <text x="130" y="175">I/O RACK</text>
+            <text x="235" y="45">HMI</text>
+            <text x="330" y="175">MOTOR DRV</text>
+            <text x="30" y="265">SENSOR BUS</text>
+            <text x="175" y="355">VFD-02</text>
+            <text x="315" y="355">SCADA</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee-band">
+  <div class="marquee-track">
+    <span>THIẾT KẾ HỆ THỐNG · <b>DESIGN</b></span>
+    <span>THI CÔNG LẮP ĐẶT · <b>INSTALL</b></span>
+    <span>TÍCH HỢP PLC / SCADA · <b>INTEGRATION</b></span>
+    <span>TỦ ĐIỆN ĐIỀU KHIỂN · <b>CONTROL PANEL</b></span>
+    <span>BẢO TRÌ ĐỊNH KỲ · <b>MAINTENANCE</b></span>
+    <span>ROBOT CÔNG NGHIỆP · <b>ROBOTICS</b></span>
+    <span>THIẾT KẾ HỆ THỐNG · <b>DESIGN</b></span>
+    <span>THI CÔNG LẮP ĐẶT · <b>INSTALL</b></span>
+    <span>TÍCH HỢP PLC / SCADA · <b>INTEGRATION</b></span>
+    <span>TỦ ĐIỆN ĐIỀU KHIỂN · <b>CONTROL PANEL</b></span>
+    <span>BẢO TRÌ ĐỊNH KỲ · <b>MAINTENANCE</b></span>
+    <span>ROBOT CÔNG NGHIỆP · <b>ROBOTICS</b></span>
+  </div>
+</div>
+
+<section class="section" id="dichvu">
+  <div class="section-head">
+    <h2>Dịch vụ tự động hóa trọn gói, từ khảo sát đến vận hành.</h2>
+    <p>ATP Automation đồng hành cùng nhà máy ở mọi giai đoạn: thiết kế giải pháp, thi công lắp đặt và bảo dưỡng dài hạn.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <span class="idx mono">01</span>
+      <h3>Thiết kế hệ thống tự động hóa</h3>
+      <p>Khảo sát dây chuyền, thiết kế sơ đồ điện, lựa chọn thiết bị PLC/HMI/servo phù hợp bài toán sản xuất.</p>
+    </div>
+    <div class="service-card">
+      <span class="idx mono">02</span>
+      <h3>Thi công lắp đặt tủ điện</h3>
+      <p>Gia công, lắp ráp và đấu nối tủ điện điều khiển đạt chuẩn công nghiệp, kiểm tra an toàn trước bàn giao.</p>
+    </div>
+    <div class="service-card">
+      <span class="idx mono">03</span>
+      <h3>Tích hợp PLC / SCADA</h3>
+      <p>Lập trình điều khiển, xây dựng giao diện giám sát SCADA, kết nối dữ liệu sản xuất theo thời gian thực.</p>
+    </div>
+    <div class="service-card">
+      <span class="idx mono">04</span>
+      <h3>Robot &amp; dây chuyền sản xuất</h3>
+      <p>Tích hợp robot công nghiệp, băng tải, cảm biến vào dây chuyền hiện có hoặc dây chuyền mới hoàn toàn.</p>
+    </div>
+    <div class="service-card">
+      <span class="idx mono">05</span>
+      <h3>Bảo trì bảo dưỡng định kỳ</h3>
+      <p>Lịch bảo dưỡng chủ động, kiểm tra thiết bị, thay thế linh kiện hao mòn để giảm thời gian dừng máy.</p>
+    </div>
+    <div class="service-card">
+      <span class="idx mono">06</span>
+      <h3>Hỗ trợ kỹ thuật khẩn cấp</h3>
+      <p>Đội ngũ kỹ thuật trực 24/7, xử lý sự cố tại chỗ hoặc từ xa để nhà máy sớm hoạt động trở lại.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="quytrinh">
+  <div class="section-head">
+    <h2>Quy trình triển khai 5 bước</h2>
+    <p>Minh bạch từng giai đoạn — khách hàng theo dõi được tiến độ dự án xuyên suốt.</p>
+  </div>
+  <div class="process-steps">
+    <div class="pstep">
+      <div class="dot">01</div>
+      <h4>Khảo sát</h4>
+      <p>Đánh giá hiện trạng, thu thập yêu cầu vận hành và ràng buộc kỹ thuật tại nhà máy.</p>
+    </div>
+    <div class="pstep">
+      <div class="dot">02</div>
+      <h4>Thiết kế</h4>
+      <p>Lập bản vẽ điện, lựa chọn thiết bị, trình bày phương án và dự toán chi tiết.</p>
+    </div>
+    <div class="pstep">
+      <div class="dot">03</div>
+      <h4>Thi công</h4>
+      <p>Gia công tủ điện, lắp đặt tại hiện trường, đấu nối và lập trình hệ thống.</p>
+    </div>
+    <div class="pstep">
+      <div class="dot">04</div>
+      <h4>Nghiệm thu</h4>
+      <p>Chạy thử, kiểm tra an toàn, đào tạo vận hành cho nhân sự nhà máy.</p>
+    </div>
+    <div class="pstep">
+      <div class="dot">05</div>
+      <h4>Bảo dưỡng</h4>
+      <p>Theo dõi vận hành, bảo trì định kỳ và hỗ trợ kỹ thuật dài hạn.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="why-wrap">
+    <div>
+      <div class="eyebrow">Vì sao chọn ATP</div>
+      <h2 style="font-size:32px; margin-bottom:30px;">Kỹ thuật chắc, phản hồi nhanh, cam kết rõ ràng.</h2>
+      <ul class="why-list">
+        <li>
+          <span class="tag mono">ĐỘI NGŨ</span>
+          <div><h4>Kỹ sư giàu kinh nghiệm thực chiến</h4><p>Kỹ sư điện — tự động hóa từng triển khai đa dạng ngành: thực phẩm, cơ khí, bao bì, dệt may.</p></div>
+        </li>
+        <li>
+          <span class="tag mono">CAM KẾT</span>
+          <div><h4>Tiến độ và chi phí minh bạch</h4><p>Báo giá chi tiết theo hạng mục, cập nhật tiến độ thi công thường xuyên cho khách hàng.</p></div>
+        </li>
+        <li>
+          <span class="tag mono">HẬU MÃI</span>
+          <div><h4>Bảo hành và bảo dưỡng dài hạn</h4><p>Hợp đồng bảo trì linh hoạt, hỗ trợ kỹ thuật nhanh khi hệ thống gặp sự cố.</p></div>
+        </li>
+      </ul>
+    </div>
+    <div class="metric-grid">
+      <div class="metric-cell"><div class="num">120+</div><div class="lbl">Dự án hoàn thành</div></div>
+      <div class="metric-cell"><div class="num">98%</div><div class="lbl">Khách hàng hài lòng</div></div>
+      <div class="metric-cell"><div class="num">40+</div><div class="lbl">Nhà máy đang bảo trì</div></div>
+      <div class="metric-cell"><div class="num">&lt;2h</div><div class="lbl">Thời gian phản hồi sự cố</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="duan">
+  <div class="section-head">
+    <h2>Dự án tiêu biểu</h2>
+    <p>Một số hạng mục ATP Automation đã thiết kế và thi công.</p>
+  </div>
+  <div class="proj-grid">
+    <div class="proj-card">
+      <div class="proj-thumb" data-tag="F&B"></div>
+      <div class="proj-body">
+        <h4>Dây chuyền đóng gói tự động</h4>
+        <p>Tích hợp robot gắp — đóng gói và hệ thống SCADA giám sát sản lượng theo ca.</p>
+      </div>
+    </div>
+    <div class="proj-card">
+      <div class="proj-thumb" data-tag="CƠ KHÍ"></div>
+      <div class="proj-body">
+        <h4>Tủ điện điều khiển trung tâm</h4>
+        <p>Thiết kế và thi công tủ điện MCC cho nhà máy gia công cơ khí chính xác.</p>
+      </div>
+    </div>
+    <div class="proj-card">
+      <div class="proj-thumb" data-tag="DỆT MAY"></div>
+      <div class="proj-body">
+        <h4>Nâng cấp hệ thống PLC cũ</h4>
+        <p>Chuyển đổi hệ điều khiển cũ sang PLC thế hệ mới, giảm 30% thời gian dừng máy.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="lienhe">
+  <div class="section-head">
+    <h2>Bắt đầu dự án tự động hóa của bạn</h2>
+    <p>Gửi yêu cầu để đội ngũ kỹ thuật ATP khảo sát và tư vấn giải pháp phù hợp.</p>
+  </div>
+  <div class="contact-wrap">
+    <div>
+      <ul class="contact-info">
+        <li><span class="lbl">Hotline</span><span class="val">0909 000 000 (24/7)</span></li>
+        <li><span class="lbl">Email</span><span class="val">contact@atpautomation.vn</span></li>
+        <li><span class="lbl">Văn phòng</span><span class="val">Khu công nghiệp, TP. Hồ Chí Minh</span></li>
+        <li><span class="lbl">Giờ làm việc</span><span class="val">Thứ 2 – Thứ 7, 8:00 – 17:30</span></li>
+      </ul>
+    </div>
+    <div class="form-panel">
+      <div class="form-row">
+        <div class="form-field"><label>Họ và tên</label><input type="text" id="atp-form-name" placeholder="Nguyễn Văn A"></div>
+        <div class="form-field"><label>Số điện thoại</label><input type="text" id="atp-form-phone" placeholder="09xx xxx xxx"></div>
+      </div>
+      <div class="form-field"><label>Email</label><input type="email" id="atp-form-email" placeholder="ban@congty.vn"></div>
+      <div class="form-field"><label>Nội dung yêu cầu</label><textarea id="atp-form-message" placeholder="Mô tả ngắn về dây chuyền / hệ thống cần tư vấn..."></textarea></div>
+      <button class="btn solid" id="atp-form-submit" style="width:100%; padding:13px;" onclick="atpSubmitForm()">Gửi yêu cầu tư vấn</button>
+      <p id="atp-form-status" style="font-family:'IBM Plex Mono'; font-size:11.5px; color:var(--text-dim); margin-top:12px;"></p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="logo" style="font-size:15px;"><img src="assets/atp-logo.png" alt="ATP Automation" class="logo-img" style="height:22px;"><span class="dim">AUTOMATION</span></div>
+  <span class="mono">© 2026 ATP Automation. Thiết kế · Thi công · Bảo dưỡng tự động hóa công nghiệp.</span>
+</footer>
+
+<!-- ===== Chat Widget ===== -->
+<div id="atp-chat-toggle">
+  <div class="ping"></div>
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+</div>
+
+<div id="atp-chat-panel">
+  <div class="chat-head">
+    <div class="ch-title">
+      <span class="status-dot"></span>
+      <div>
+        <h4>ATP SUPPORT</h4>
+        <div class="sub">Trợ lý kỹ thuật · Trực tuyến</div>
+      </div>
+    </div>
+    <button class="chat-close" onclick="document.getElementById('atp-chat-panel').classList.remove('open')">✕</button>
+  </div>
+  <div class="chat-body" id="atp-chat-body">
+    <div class="msg bot"><span class="tag">ATP SUPPORT</span>Chào bạn 👋 Mình là trợ lý kỹ thuật của ATP Automation. Bạn cần tư vấn về thiết kế, thi công hay bảo dưỡng hệ thống tự động hóa?</div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" id="atp-chat-input" placeholder="Nhập câu hỏi của bạn..." onkeydown="if(event.key==='Enter')atpSendMessage()">
+    <button class="chat-send" id="atp-chat-send" onclick="atpSendMessage()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#12100a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+    </button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
