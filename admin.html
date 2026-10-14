@@ -1,0 +1,36 @@
+<!DOCTYPE html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ATP Admin</title><link rel="stylesheet" href="chat.css"></head><body>
+<div class="wrap"><h2>Quản trị ATP Chat</h2>
+<h3>Tài khoản</h3><div id="users"></div>
+<h3>Dự án</h3><div class="row"><input id="pn" placeholder="Tên dự án"><select id="cust"></select><button id="addp">Thêm dự án</button></div>
+<h3>Cập nhật tiến độ</h3><div class="row"><select id="proj"></select><input id="pct" type="number" min="0" max="100" placeholder="%" style="width:70px"></div>
+<div class="row"><input id="note" placeholder="Nội dung tiến độ" style="flex:1"><button id="send">Đăng lên nhóm chung</button></div></div>
+<script type="module">
+import {auth,db} from "./firebase-config.js";
+import {onAuthStateChanged as on} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {collection,doc,getDoc,getDocs,addDoc,updateDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const $=id=>document.getElementById(id);
+const el=(t,txt)=>{const e=document.createElement(t);if(txt)e.textContent=txt;return e};
+on(auth,async u=>{
+  const me=u&&(await getDoc(doc(db,"users",u.uid))).data();
+  if(!me||me.role!=="admin"){document.body.innerHTML='<p style="padding:2rem">Chỉ admin mới vào được. <a href="chat.html">Đăng nhập</a></p>';return}
+  load(u.uid,me);
+});
+async function load(uid,me){
+  const us=(await getDocs(collection(db,"users"))).docs, ps=(await getDocs(collection(db,"projects"))).docs;
+  $("users").replaceChildren();
+  us.forEach(d=>{if(d.id===uid)return;const x=d.data(),r=el("div"),s=el("select");r.className="row";
+    ["customer","staff","admin"].forEach(o=>s.add(new Option(o,o,false,o===x.role)));
+    const b=el("button",x.approved?"Khoá":"Duyệt");
+    b.onclick=async()=>{await updateDoc(doc(db,"users",d.id),{approved:!x.approved,role:s.value});load(uid,me)};
+    r.append(el("span",x.name+(x.approved?"":" (chờ duyệt)")),s,b);$("users").append(r)});
+  $("cust").replaceChildren(...us.filter(d=>d.data().role==="customer"&&d.data().approved).map(d=>new Option(d.data().name,d.id)));
+  $("proj").replaceChildren(...ps.map(d=>new Option(d.data().name+" — "+d.data().customerName,d.id)));
+  $("addp").onclick=async()=>{if(!$("pn").value||!$("cust").value)return;
+    await addDoc(collection(db,"projects"),{name:$("pn").value,customerId:$("cust").value,customerName:$("cust").selectedOptions[0].text,progress:0});$("pn").value="";load(uid,me)};
+  $("send").onclick=async()=>{const d=ps.find(x=>x.id===$("proj").value);if(!d||!$("pct").value)return;
+    const p=d.data(),pct=Number($("pct").value);
+    await addDoc(collection(db,"rooms","general","messages"),{from:uid,fromName:"ATP · "+me.name,type:"progress",tags:[p.customerId],
+      text:`📌 ${p.name}: hoàn thành ${pct}%. ${$("note").value}\n@${p.customerName}`,at:serverTimestamp()});
+    await updateDoc(doc(db,"projects",d.id),{progress:pct});$("note").value="";$("pct").value=""};
+}
+</script></body></html>
