@@ -3,7 +3,9 @@ import {signInWithEmailAndPassword as si,createUserWithEmailAndPassword as su,on
 import {doc,getDoc,setDoc,collection,query,where,orderBy,limit,onSnapshot,addDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 const $=id=>document.getElementById(id), msg=t=>$("msg").textContent=t;
 const isStaff=u=>["staff","admin"].includes(u.role);
-let me,cur,unsub;
+const ini=n=>(n||"?").trim().split(/\s+/).slice(-2).map(w=>w[0]).join("").toUpperCase();
+const names={general:"Nhóm chung"};
+let me,cur,unsub,unsubU;
 $("bin").onclick=()=>si(auth,$("em").value,$("pw").value).catch(()=>msg("Sai email hoặc mật khẩu"));
 $("bup").onclick=async()=>{
   if(!$("nm").value.trim())return msg("Nhập tên của bạn trước khi đăng ký");
@@ -12,24 +14,34 @@ $("bup").onclick=async()=>{
     location.reload();}catch(e){msg(e.message)}};
 $("out").onclick=()=>signOut(auth);
 on(auth,async u=>{
-  if(!u){$("login").hidden=false;$("app").hidden=true;return}
+  if(!u){unsub&&unsub();unsubU&&unsubU();cur=null;$("login").hidden=false;$("app").hidden=true;return}
   const s=await getDoc(doc(db,"users",u.uid));
   if(!s.exists()||!s.data().approved){await signOut(auth);return msg("Tài khoản đang chờ admin duyệt.")}
   me={uid:u.uid,...s.data()};
-  $("login").hidden=true;$("app").hidden=false;$("me").textContent=me.name+" · "+(isStaff(me)?"Nhân viên ATP":"Khách hàng");
+  $("login").hidden=true;$("app").hidden=false;
+  $("av").textContent=ini(me.name);$("meName").textContent=me.name;$("meRole").textContent=isStaff(me)?"Nhân viên ATP":"Khách hàng";
   const q=isStaff(me)?query(collection(db,"users"),where("approved","==",true)):query(collection(db,"users"),where("role","in",["staff","admin"]));
-  onSnapshot(q,sn=>{$("rooms").replaceChildren();add("general","Nhóm chung");
-    sn.forEach(d=>{if(d.id!==me.uid)add([me.uid,d.id].sort().join("_"),d.data().name)});open("general","Nhóm chung")});
+  unsubU=onSnapshot(q,sn=>{
+    $("rooms").replaceChildren();lab("Kênh chung");add("general","#");lab(isStaff(me)?"Tin nhắn riêng":"Nhân viên ATP");
+    sn.forEach(d=>{if(d.id===me.uid)return;const id=[me.uid,d.id].sort().join("_");names[id]=d.data().name;add(id,ini(d.data().name))});
+    open(cur||"general")});
 });
-function add(id,label){const b=document.createElement("button");b.textContent=label;b.onclick=()=>open(id,label);b.dataset.id=id;$("rooms").append(b)}
-function open(id,title){
-  unsub&&unsub();cur=id;$("title").textContent=title;
+function lab(t){const d=document.createElement("div");d.className="lab";d.textContent=t;$("rooms").append(d)}
+function add(id,icon){const b=document.createElement("button"),i=document.createElement("i"),s=document.createElement("span");
+  b.dataset.id=id;i.textContent=icon;s.textContent=names[id];b.append(i,s);b.onclick=()=>open(id);$("rooms").append(b)}
+function fill(p,t){t.split(/(@[^\n]+)/).forEach((x,i)=>{if(i%2){const a=document.createElement("span");a.className="tag";a.textContent=x;p.append(a)}else p.append(x)})}
+function open(id){
   document.querySelectorAll("#rooms button").forEach(b=>b.classList.toggle("on",b.dataset.id===id));
+  if(id===cur)return;
+  unsub&&unsub();cur=id;$("title").textContent=names[id];$("sub").textContent=id==="general"?"TẤT CẢ THÀNH VIÊN":"TIN NHẮN RIÊNG";
   unsub=onSnapshot(query(collection(db,"rooms",id,"messages"),orderBy("at"),limit(200)),sn=>{
     $("list").replaceChildren();
-    sn.forEach(d=>{const m=d.data(),e=document.createElement("div"),b=document.createElement("b"),p=document.createElement("p");
-      e.className="m"+(m.from===me.uid?" mine":"")+(m.type==="progress"?" prog":"")+((m.tags||[]).includes(me.uid)?" tagged":"");
-      b.textContent=m.fromName;p.textContent=m.text;e.append(b,p);$("list").append(e)});
+    sn.forEach(d=>{const m=d.data(),prog=m.type==="progress",mine=m.from===me.uid&&!prog;
+      const e=document.createElement("div"),h=document.createElement("div"),n=document.createElement("b"),tm=document.createElement("time"),p=document.createElement("p");
+      e.className="m"+(mine?" mine":"")+(prog?" prog":"")+((m.tags||[]).includes(me.uid)?" tagged":"");h.className="mh";
+      n.textContent=prog?"CẬP NHẬT TIẾN ĐỘ":mine?"Bạn":m.fromName;
+      tm.textContent=m.at?m.at.toDate().toLocaleTimeString("vi-VN",{hour:"2-digit",minute:"2-digit"}):"";
+      fill(p,m.text);h.append(n,tm);e.append(h,p);$("list").append(e)});
     $("list").scrollTop=1e9});
 }
 $("f").onsubmit=async e=>{e.preventDefault();const t=$("t").value.trim();if(!t)return;$("t").value="";
