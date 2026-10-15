@@ -1,5 +1,13 @@
-<!DOCTYPE html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ATP Chat</title><link rel="stylesheet" href="chat.css"></head><body>
-<div id="login" class="card"><h2>ATP Chat</h2><input id="em" type="email" placeholder="Email"><input id="pw" type="password" placeholder="Mật khẩu"><input id="nm" placeholder="Tên của bạn (chỉ cần khi đăng ký)"><button id="bin">Đăng nhập</button><button id="bup" class="ghost">Đăng ký tài khoản mới</button><p id="msg"></p></div>
-<div id="app" hidden><aside><div id="me"></div><div id="rooms"></div><button id="out" class="ghost">Đăng xuất</button></aside>
-<main><header id="title"></header><div id="list"></div><form id="f"><input id="t" placeholder="Nhập tin nhắn" autocomplete="off"><button>Gửi</button></form></main></div>
+<!DOCTYPE html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ATP Chat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="chat.css"></head><body>
+<div id="login" class="card"><div class="eyebrow">— ATP AUTOMATION · KÊNH NỘI BỘ</div><h2>Đăng nhập</h2>
+<input id="em" type="email" placeholder="Email"><input id="pw" type="password" placeholder="Mật khẩu"><input id="nm" placeholder="Tên / công ty (chỉ khi đăng ký)">
+<button id="bin">Đăng nhập</button><button id="bup" class="ghost">Đăng ký tài khoản mới</button><p id="msg"></p><a class="back" href="index.html">← Về trang chủ</a></div>
+<div id="app" hidden><aside><div class="brand">ATP<span>Automation</span></div>
+<div class="who"><i id="av"></i><div><b id="meName"></b><small id="meRole"></small></div></div>
+<div id="rooms"></div><button id="out" class="ghost">Đăng xuất</button></aside>
+<main><header><b id="title"></b><small id="sub"></small></header><div id="list"></div>
+<form id="f"><input id="t" placeholder="Nhập tin nhắn…" autocomplete="off"><button>Gửi</button></form></main></div>
 <script type="module" src="chat.js"></script></body></html>
