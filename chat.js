@@ -37,12 +37,55 @@ function open(id){
   unsub=onSnapshot(query(collection(db,"rooms",id,"messages"),orderBy("at"),limit(200)),sn=>{
     $("list").replaceChildren();
     sn.forEach(d=>{const m=d.data(),prog=m.type==="progress",mine=m.from===me.uid&&!prog;
-      const e=document.createElement("div"),h=document.createElement("div"),n=document.createElement("b"),tm=document.createElement("time"),p=document.createElement("p");
-      e.className="m"+(mine?" mine":"")+(prog?" prog":"")+((m.tags||[]).includes(me.uid)?" tagged":"");h.className="mh";
-      n.textContent=prog?"CẬP NHẬT TIẾN ĐỘ":mine?"Bạn":m.fromName;
-      tm.textContent=m.at?m.at.toDate().toLocaleTimeString("vi-VN",{hour:"2-digit",minute:"2-digit"}):"";
-      fill(p,m.text);h.append(n,tm);e.append(h,p);$("list").append(e)});
-    $("list").scrollTop=1e9});
+     
+const e = document.createElement("div");
+const h = document.createElement("div");
+const n = document.createElement("b");
+const tm = document.createElement("time");
+const p = document.createElement("p");
+
+e.className = "m" + (mine ? " mine" : "") +
+  (prog ? " prog" : "") +
+  ((m.tags || []).includes(me.uid) ? " tagged" : "");
+
+h.className = "mh";
+
+n.textContent = prog
+  ? "CẬP NHẬT TIẾN ĐỘ"
+  : (mine ? "Bạn" : (names[m.from] || "Thành viên"));
+
+tm.textContent = m.at?.toDate?.().toLocaleTimeString(
+  "vi-VN", { hour: "2-digit", minute: "2-digit" }
+) || "";
+
+fill(p, m.text || "");
+h.append(n, tm);
+e.append(h, p);
+
+// Nút thu hồi chỉ hiện với tin nhắn của mình
+if (mine && !prog) {
+  const recall = document.createElement("button");
+  recall.type = "button";
+  recall.textContent = "Thu hồi";
+  recall.className = "recall-btn";
+
+  recall.onclick = async () => {
+    if (!confirm("Bạn có chắc muốn thu hồi tin nhắn này?")) return;
+
+    try {
+      await deleteDoc(
+        doc(db, "rooms", cur, "messages", d.id)
+      );
+    } catch (err) {
+      alert("Không thể thu hồi tin nhắn: " + err.message);
+    }
+  };
+
+  e.append(recall);
+}
+
+$("#list").append(e);
+
 }
 $("f").onsubmit=async e=>{e.preventDefault();const t=$("t").value.trim();if(!t)return;$("t").value="";
   await addDoc(collection(db,"rooms",cur,"messages"),{from:me.uid,fromName:me.name,text:t,type:"text",at:serverTimestamp()})};
