@@ -1,18 +1,37 @@
-*{box-sizing:border-box}body{margin:0;font:15px/1.5 system-ui,sans-serif;background:#eef1f5;color:#17212b}
-[hidden]{display:none!important}
-.card{max-width:340px;margin:12vh auto;background:#fff;padding:24px;border:1px solid #cfd6df;display:grid;gap:10px}
-input,select{padding:9px;border:1px solid #b9c2ce;font:inherit;min-width:0}
-button{padding:9px 14px;border:0;background:#1f5fbf;color:#fff;font:inherit;cursor:pointer}
-button.ghost{background:none;color:#1f5fbf;border:1px solid #1f5fbf}
-button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #e8a317;outline-offset:2px}
-#app{display:grid;grid-template-columns:230px 1fr;height:100vh}
-aside{background:#17212b;color:#fff;padding:12px;display:flex;flex-direction:column;gap:6px;overflow:auto}
-aside button{text-align:left;background:#243342}aside button.on{background:#1f5fbf}#me{margin-bottom:8px;font-weight:600}
-main{display:flex;flex-direction:column;min-height:0}header{padding:12px 16px;background:#fff;border-bottom:1px solid #cfd6df;font-weight:600}
-#list{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:8px}
-.m{max-width:70%;background:#fff;padding:8px 12px;border:1px solid #d5dbe3}.m p{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
-.m b{font-size:12px;color:#51606f}.mine{align-self:flex-end;background:#dbe8fb}
-.prog{max-width:90%;border-left:4px solid #1f5fbf}.tagged{background:#fff3d1;border-color:#e8a317}
-#f{display:flex;gap:8px;padding:12px;background:#fff;border-top:1px solid #cfd6df}#t{flex:1}
-.wrap{max-width:720px;margin:24px auto;padding:0 16px;display:grid;gap:12px}.row{display:flex;gap:8px;align-items:center}.row span{flex:1}
-@media(max-width:640px){#app{grid-template-columns:1fr;grid-template-rows:auto 1fr}aside{flex-direction:row;overflow-x:auto}#me,#out{display:none}}
+:root{--bg:#0a1220;--p:#101b2e;--p2:#16243b;--line:#223350;--tx:#e8edf5;--mut:#8696ae;--amb:#ffb81c}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;color:var(--tx);font:15px/1.5 "Space Grotesk",system-ui,sans-serif;background:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px) 0 0/40px 40px,linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px) 0 0/40px 40px,var(--bg)}
+.eyebrow,time,.lab,small,.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+.eyebrow{color:var(--amb);font-size:11px;letter-spacing:.14em}h2,h3{margin:0}
+input,select{background:var(--bg);color:var(--tx);border:1px solid var(--line);padding:11px 12px;font:inherit;min-width:0;border-radius:0}
+input::placeholder{color:var(--mut)}input:focus,select:focus{outline:none;border-color:var(--amb)}
+button{background:var(--amb);color:#0a1220;border:0;padding:11px 16px;font:500 13px "JetBrains Mono",ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+button:hover{filter:brightness(1.08)}button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+button.ghost{background:none;color:var(--amb);border:1px solid var(--amb)}
+.card{max-width:380px;margin:10vh auto;padding:32px;background:var(--p);border:1px solid var(--line);border-top:3px solid var(--amb);display:grid;gap:12px}
+#msg{margin:0;color:var(--amb);font-size:13px;min-height:1em}.back{color:var(--mut);font-size:13px;text-decoration:none}
+#app{display:grid;grid-template-columns:270px 1fr;height:100dvh}
+aside{background:var(--p);border-right:1px solid var(--line);padding:20px 14px;display:flex;flex-direction:column;gap:14px;overflow:auto}
+.brand{font-weight:700;font-size:20px;line-height:1.2}.brand span{display:block;color:var(--amb);font:11px "JetBrains Mono",monospace;letter-spacing:.2em;text-transform:uppercase}
+.who{display:flex;gap:10px;align-items:center;padding:10px;background:var(--p2);border:1px solid var(--line)}.who small{display:block;color:var(--mut);font-size:11px}
+i{font-style:normal;display:grid;place-items:center;width:34px;height:34px;flex:none;background:var(--bg);border:1px solid var(--amb);color:var(--amb);font:500 12px "JetBrains Mono",monospace}
+#rooms{display:flex;flex-direction:column;gap:4px;flex:1}
+.lab{color:var(--mut);font-size:10px;letter-spacing:.16em;text-transform:uppercase;margin:12px 4px 4px}
+#rooms button{display:flex;gap:10px;align-items:center;text-align:left;background:none;color:var(--tx);text-transform:none;letter-spacing:0;font:500 14px "Space Grotesk",sans-serif;padding:8px;border-left:3px solid transparent}
+#rooms button:hover,#rooms button.on{background:var(--p2)}#rooms button.on{border-left-color:var(--amb)}
+#rooms i{width:30px;height:30px;border-color:var(--line);color:var(--mut)}#rooms .on i{border-color:var(--amb);color:var(--amb)}
+main{display:flex;flex-direction:column;min-height:0;min-width:0}
+header{padding:16px 24px;background:var(--p);border-bottom:1px solid var(--line)}header b{font-size:17px}header small{display:block;color:var(--mut);font-size:11px;letter-spacing:.1em}
+#list{flex:1;overflow:auto;padding:24px;display:flex;flex-direction:column;gap:12px}
+.m{max-width:min(620px,78%);padding:10px 14px;background:var(--p2);border:1px solid var(--line)}.m p{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.mh{display:flex;gap:12px;align-items:baseline;margin-bottom:2px}.mh b{font-size:12px;color:var(--amb)}.mh time{font-size:10px;color:var(--mut)}
+.mine{align-self:flex-end;background:var(--amb);color:#0a1220;border-color:var(--amb)}.mine .mh b,.mine .mh time{color:#0a1220;opacity:.7}
+.prog{align-self:stretch;max-width:none;background:var(--p);border-left:4px solid var(--amb)}.prog .mh b{letter-spacing:.14em;font-family:"JetBrains Mono",monospace}
+.tagged{box-shadow:0 0 0 1px var(--amb),0 0 18px rgba(255,184,28,.25)}.tagged .mh::after{content:"@ BẠN ĐƯỢC TAG";margin-left:auto;font:10px "JetBrains Mono",monospace;color:var(--amb)}
+.tag{color:var(--amb);font-weight:700}.mine .tag{color:#0a1220;text-decoration:underline}
+#f{display:flex;gap:10px;padding:16px 24px;background:var(--p);border-top:1px solid var(--line)}#t{flex:1}
+::-webkit-scrollbar{width:8px}::-webkit-scrollbar-thumb{background:var(--line)}
+.wrap{max-width:720px;margin:32px auto;padding:28px;background:var(--p);border:1px solid var(--line);border-top:3px solid var(--amb);display:grid;gap:14px}
+.wrap h3{font:500 12px "JetBrains Mono",ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--amb);margin-top:10px}
+.row{display:flex;gap:8px;align-items:center}.row span{flex:1}
+@media(max-width:700px){#app{grid-template-columns:1fr;grid-template-rows:auto 1fr}aside{flex-direction:row;align-items:center;padding:10px;border-right:0;border-bottom:1px solid var(--line)}.who,.lab,#out,.brand span{display:none}#rooms{flex-direction:row;flex:none}#rooms button span{white-space:nowrap}.m{max-width:92%}#list,header,#f{padding-left:14px;padding-right:14px}}
