@@ -1,6 +1,11 @@
 import {auth,db} from "./firebase-config.js";
 import {signInWithEmailAndPassword as si,createUserWithEmailAndPassword as su,onAuthStateChanged as on,signOut} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {doc,getDoc,setDoc,collection,query,where,orderBy,limit,onSnapshot,addDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+  doc, getDoc, setDoc, collection, query,
+  where, orderBy, limit, onSnapshot,
+  addDoc, serverTimestamp, deleteDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 const $=id=>document.getElementById(id), msg=t=>$("msg").textContent=t;
 const isStaff=u=>["staff","admin"].includes(u.role);
 const ini=n=>(n||"?").trim().split(/\s+/).slice(-2).map(w=>w[0]).join("").toUpperCase();
