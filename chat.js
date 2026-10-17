@@ -1,6 +1,6 @@
 import {auth,db} from "./firebase-config.js";
 import {signInWithEmailAndPassword as si,createUserWithEmailAndPassword as su,onAuthStateChanged as on,signOut} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import {doc,getDoc,setDoc,collection,query,where,orderBy,limit,onSnapshot,addDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {doc,getDoc,setDoc,collection,query,where,orderBy,limit,onSnapshot,addDoc,updateDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 const $=id=>document.getElementById(id), msg=t=>$("msg").textContent=t;
 const isStaff=u=>["staff","admin"].includes(u.role);
 const ini=n=>(n||"?").trim().split(/\s+/).slice(-2).map(w=>w[0]).join("").toUpperCase();
@@ -42,11 +42,16 @@ function open(id){
     $("list").replaceChildren();
     sn.forEach(d=>{const m=d.data(),prog=m.type==="progress",mine=m.from===me.uid&&!prog;
       const e=document.createElement("div"),h=document.createElement("div"),n=document.createElement("b"),tm=document.createElement("time"),p=document.createElement("p");
-      e.className="m"+(mine?" mine":"")+(prog?" prog":"")+((m.tags||[]).includes(me.uid)?" tagged":"");h.className="mh";
+      e.className="m"+(mine?" mine":"")+(prog?" prog":"")+(!m.recalled&&(m.tags||[]).includes(me.uid)?" tagged":"")+(m.recalled?" recalled":"");h.className="mh";
       n.textContent=prog?"CẬP NHẬT TIẾN ĐỘ":mine?"Bạn":m.fromName;
       tm.textContent=m.at?m.at.toDate().toLocaleTimeString("vi-VN",{hour:"2-digit",minute:"2-digit"}):"";
-      fill(p,m.text);h.append(n,tm);e.append(h,p);$("list").append(e)});
+      if(m.recalled)p.textContent="Tin nhắn đã được thu hồi";else fill(p,m.text);h.append(n,tm);
+      if(m.from===me.uid&&!m.recalled){const r=document.createElement("button");r.className="rc";r.textContent="Thu hồi";r.onclick=()=>recall(id,d.id);h.append(r)}
+      e.append(h,p);$("list").append(e)});
     $("list").scrollTop=1e9},e=>msg("Lỗi: "+e.code));
 }
 $("f").onsubmit=async e=>{e.preventDefault();const t=$("t").value.trim();if(!t)return;$("t").value="";
   try{await addDoc(collection(db,"rooms",cur,"messages"),{from:me.uid,fromName:me.name,text:t,type:"text",at:serverTimestamp()})}catch(e){alert("Không gửi được: "+e.code)}};
+async function recall(room,mid){
+  if(!confirm("Thu hồi tin nhắn này? Mọi người sẽ không còn thấy nội dung."))return;
+  try{await updateDoc(doc(db,"rooms",room,"messages",mid),{recalled:true,text:""})}catch(e){alert("Không thu hồi được: "+e.code)}}
