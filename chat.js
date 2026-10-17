@@ -15,6 +15,7 @@ $("bup").onclick=async()=>{
     await setDoc(doc(db,"users",c.user.uid),{name:$("nm").value.trim(),role:"customer",approved:false});
     location.reload();}catch(e){msg("Lỗi: "+(e.code||e.message))}};
 $("out").onclick=()=>signOut(auth);
+$("mn").onclick=()=>$("app").classList.toggle("open");$("list").onclick=()=>$("app").classList.remove("open");
 on(auth,async u=>{
   if(!u){unsub&&unsub();unsubU&&unsubU();cur=null;$("login").hidden=false;$("app").hidden=true;return}
   try{
@@ -32,7 +33,7 @@ on(auth,async u=>{
 });
 function lab(t){const d=document.createElement("div");d.className="lab";d.textContent=t;$("rooms").append(d)}
 function add(id,icon){const b=document.createElement("button"),i=document.createElement("i"),s=document.createElement("span");
-  b.dataset.id=id;i.textContent=icon;s.textContent=names[id];b.append(i,s);b.onclick=()=>open(id);$("rooms").append(b)}
+  b.dataset.id=id;i.textContent=icon;s.textContent=names[id];b.append(i,s);b.onclick=()=>{open(id);$("app").classList.remove("open")};$("rooms").append(b)}
 function fill(p,t){t.split(/(@[^\n]+)/).forEach((x,i)=>{if(i%2){const a=document.createElement("span");a.className="tag";a.textContent=x;p.append(a)}else p.append(x)})}
 function open(id){
   document.querySelectorAll("#rooms button").forEach(b=>b.classList.toggle("on",b.dataset.id===id));
