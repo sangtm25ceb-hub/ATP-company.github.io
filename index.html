@@ -18,12 +18,13 @@
   </div>
   <nav>
     <a class="navlink" href="#dichvu">Dịch vụ</a>
-    <a class="navlink"href="chat.html">Trò chuyện</a>
     <a class="navlink" href="#quytrinh">Quy trình</a>
     <a class="navlink" href="#duan">Dự án</a>
     <a class="navlink" href="#lienhe">Liên hệ</a>
+    <a class="navlink" href="chat.html">Chat nội bộ</a>
     <button class="btn solid" onclick="document.getElementById('atp-chat-toggle').click()">Yêu cầu tư vấn</button>
   </nav>
+  <button class="menu-toggle" id="menu-toggle" aria-label="Mở menu" aria-expanded="false">☰</button>
 </header>
 
 <section class="hero">
@@ -316,6 +317,12 @@
   </div>
 </div>
 
+<script>
+(function(){var h=document.querySelector("header"),b=document.getElementById("menu-toggle");
+function set(o){h.classList.toggle("menu-open",o);b.setAttribute("aria-expanded",o);b.textContent=o?"✕":"☰"}
+b.onclick=function(){set(!h.classList.contains("menu-open"))};
+h.querySelectorAll("nav a,nav button").forEach(function(e){e.addEventListener("click",function(){set(false)})});})();
+</script>
 <script src="script.js"></script>
 
 </body>
