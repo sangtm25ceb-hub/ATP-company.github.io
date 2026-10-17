@@ -1,35 +1,34 @@
 import {auth,db} from "./firebase-config.js";
 import {signInWithEmailAndPassword as si,createUserWithEmailAndPassword as su,onAuthStateChanged as on,signOut} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {doc,getDoc,setDoc,collection,query,where,orderBy,limit,onSnapshot,addDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import {
-  doc, getDoc, setDoc, collection, query,
-  where, orderBy, limit, onSnapshot,
-  addDoc, serverTimestamp, deleteDoc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 const $=id=>document.getElementById(id), msg=t=>$("msg").textContent=t;
 const isStaff=u=>["staff","admin"].includes(u.role);
 const ini=n=>(n||"?").trim().split(/\s+/).slice(-2).map(w=>w[0]).join("").toUpperCase();
 const names={general:"Nhóm chung"};
 let me,cur,unsub,unsubU;
-$("bin").onclick=()=>si(auth,$("em").value,$("pw").value).catch(()=>msg("Sai email hoặc mật khẩu"));
+window.onunhandledrejection=e=>msg("Lỗi: "+(e.reason&&(e.reason.code||e.reason.message)));
+$("bin").onclick=()=>{msg("");si(auth,$("em").value.trim(),$("pw").value).catch(e=>msg("Lỗi: "+e.code))};
+$("pw").onkeydown=e=>{if(e.key==="Enter")$("bin").click()};
 $("bup").onclick=async()=>{
   if(!$("nm").value.trim())return msg("Nhập tên của bạn trước khi đăng ký");
-  try{const c=await su(auth,$("em").value,$("pw").value);
+  try{const c=await su(auth,$("em").value.trim(),$("pw").value);
     await setDoc(doc(db,"users",c.user.uid),{name:$("nm").value.trim(),role:"customer",approved:false});
-    location.reload();}catch(e){msg(e.message)}};
+    location.reload();}catch(e){msg("Lỗi: "+(e.code||e.message))}};
 $("out").onclick=()=>signOut(auth);
 on(auth,async u=>{
   if(!u){unsub&&unsub();unsubU&&unsubU();cur=null;$("login").hidden=false;$("app").hidden=true;return}
-  const s=await getDoc(doc(db,"users",u.uid));
-  if(!s.exists()||!s.data().approved){await signOut(auth);return msg("Tài khoản đang chờ admin duyệt.")}
-  me={uid:u.uid,...s.data()};
-  $("login").hidden=true;$("app").hidden=false;
-  $("av").textContent=ini(me.name);$("meName").textContent=me.name;$("meRole").textContent=isStaff(me)?"Nhân viên ATP":"Khách hàng";
-  const q=isStaff(me)?query(collection(db,"users"),where("approved","==",true)):query(collection(db,"users"),where("role","in",["staff","admin"]));
-  unsubU=onSnapshot(q,sn=>{
-    $("rooms").replaceChildren();lab("Kênh chung");add("general","#");lab(isStaff(me)?"Tin nhắn riêng":"Nhân viên ATP");
-    sn.forEach(d=>{if(d.id===me.uid)return;const id=[me.uid,d.id].sort().join("_");names[id]=d.data().name;add(id,ini(d.data().name))});
-    open(cur||"general")});
+  try{
+    const s=await getDoc(doc(db,"users",u.uid));
+    if(!s.exists()||!s.data().approved){await signOut(auth);return msg("Tài khoản đang chờ admin duyệt.")}
+    me={uid:u.uid,...s.data()};
+    $("login").hidden=true;$("app").hidden=false;
+    $("av").textContent=ini(me.name);$("meName").textContent=me.name;$("meRole").textContent=isStaff(me)?"Nhân viên ATP":"Khách hàng";
+    const q=isStaff(me)?query(collection(db,"users"),where("approved","==",true)):query(collection(db,"users"),where("role","in",["staff","admin"]));
+    unsubU=onSnapshot(q,sn=>{
+      $("rooms").replaceChildren();lab("Kênh chung");add("general","#");lab(isStaff(me)?"Tin nhắn riêng":"Nhân viên ATP");
+      sn.forEach(d=>{if(d.id===me.uid)return;const id=[me.uid,d.id].sort().join("_");names[id]=d.data().name;add(id,ini(d.data().name))});
+      open(cur||"general")},e=>msg("Lỗi: "+e.code));
+  }catch(e){msg("Lỗi: "+(e.code||e.message))}
 });
 function lab(t){const d=document.createElement("div");d.className="lab";d.textContent=t;$("rooms").append(d)}
 function add(id,icon){const b=document.createElement("button"),i=document.createElement("i"),s=document.createElement("span");
@@ -42,55 +41,12 @@ function open(id){
   unsub=onSnapshot(query(collection(db,"rooms",id,"messages"),orderBy("at"),limit(200)),sn=>{
     $("list").replaceChildren();
     sn.forEach(d=>{const m=d.data(),prog=m.type==="progress",mine=m.from===me.uid&&!prog;
-     
-const e = document.createElement("div");
-const h = document.createElement("div");
-const n = document.createElement("b");
-const tm = document.createElement("time");
-const p = document.createElement("p");
-
-e.className = "m" + (mine ? " mine" : "") +
-  (prog ? " prog" : "") +
-  ((m.tags || []).includes(me.uid) ? " tagged" : "");
-
-h.className = "mh";
-
-n.textContent = prog
-  ? "CẬP NHẬT TIẾN ĐỘ"
-  : (mine ? "Bạn" : (names[m.from] || "Thành viên"));
-
-tm.textContent = m.at?.toDate?.().toLocaleTimeString(
-  "vi-VN", { hour: "2-digit", minute: "2-digit" }
-) || "";
-
-fill(p, m.text || "");
-h.append(n, tm);
-e.append(h, p);
-
-// Nút thu hồi chỉ hiện với tin nhắn của mình
-if (mine && !prog) {
-  const recall = document.createElement("button");
-  recall.type = "button";
-  recall.textContent = "Thu hồi";
-  recall.className = "recall-btn";
-
-  recall.onclick = async () => {
-    if (!confirm("Bạn có chắc muốn thu hồi tin nhắn này?")) return;
-
-    try {
-      await deleteDoc(
-        doc(db, "rooms", cur, "messages", d.id)
-      );
-    } catch (err) {
-      alert("Không thể thu hồi tin nhắn: " + err.message);
-    }
-  };
-
-  e.append(recall);
-}
-
-$("#list").append(e);
-
+      const e=document.createElement("div"),h=document.createElement("div"),n=document.createElement("b"),tm=document.createElement("time"),p=document.createElement("p");
+      e.className="m"+(mine?" mine":"")+(prog?" prog":"")+((m.tags||[]).includes(me.uid)?" tagged":"");h.className="mh";
+      n.textContent=prog?"CẬP NHẬT TIẾN ĐỘ":mine?"Bạn":m.fromName;
+      tm.textContent=m.at?m.at.toDate().toLocaleTimeString("vi-VN",{hour:"2-digit",minute:"2-digit"}):"";
+      fill(p,m.text);h.append(n,tm);e.append(h,p);$("list").append(e)});
+    $("list").scrollTop=1e9},e=>msg("Lỗi: "+e.code));
 }
 $("f").onsubmit=async e=>{e.preventDefault();const t=$("t").value.trim();if(!t)return;$("t").value="";
-  await addDoc(collection(db,"rooms",cur,"messages"),{from:me.uid,fromName:me.name,text:t,type:"text",at:serverTimestamp()})};
+  try{await addDoc(collection(db,"rooms",cur,"messages"),{from:me.uid,fromName:me.name,text:t,type:"text",at:serverTimestamp()})}catch(e){alert("Không gửi được: "+e.code)}};
