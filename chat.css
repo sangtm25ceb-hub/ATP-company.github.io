@@ -35,22 +35,6 @@ header{padding:16px 24px;background:var(--p);border-bottom:1px solid var(--line)
 .wrap h3{font:500 12px "JetBrains Mono",ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--amb);margin-top:10px}
 .row{display:flex;gap:8px;align-items:center}.row span{flex:1}
 @media(max-width:700px){#app{grid-template-columns:1fr;grid-template-rows:auto 1fr}aside{flex-direction:row;align-items:center;padding:10px;border-right:0;border-bottom:1px solid var(--line)}.who,.lab,#out,.brand span{display:none}#rooms{flex-direction:row;flex:none}#rooms button span{white-space:nowrap}.m{max-width:92%}#list,header,#f{padding-left:14px;padding-right:14px}}
-
-.recall-btn {
-  display: block;
-  margin-top: 8px;
-  padding: 5px 10px;
-  border: 1px solid #ffb81c;
-  background: transparent;
-  color: #ffb81c;
-  font-size: 11px;
-  cursor: pointer;
-  border-radius: 4px;
-  text-transform: none;
-  letter-spacing: 0;
-}
-
-.recall-btn:hover {
-  background: #ffb81c;
-  color: #101b2b;
-}
+.rc{margin-left:auto;padding:0 6px;background:none;color:inherit;border:0;font:10px "JetBrains Mono",ui-monospace,monospace;text-decoration:underline;opacity:0;text-transform:none;letter-spacing:0}
+.m:hover .rc,.rc:focus-visible{opacity:.8}@media(hover:none){.rc{opacity:.8}}
+.recalled,.recalled.mine{background:none;color:var(--mut);border:1px dashed var(--line)}.recalled p{font-style:italic}.recalled .mh b,.recalled .mh time{color:var(--mut);opacity:1}
